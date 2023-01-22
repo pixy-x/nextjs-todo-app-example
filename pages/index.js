@@ -106,8 +106,10 @@ export default function Home() {
                   {i + 1}{" "}
                 </span>
                 <div className="px-10">
-                  <h4 className="text-slate-800 text-2xl">{t.label}</h4>
-                  {t.desc.contains && <p>{t.desc.content}</p>}
+                  <h4 className="text-slate-800 text-2xl">
+                    {t.label.limitText()}
+                  </h4>
+                  {t.desc.contains && <p>{t.desc.content.limitText(360)}</p>}
                 </div>
                 <div className="flex items-center justify-start py-2 mt-2 pr-10 gap-2 text-gray-600">
                   <MdAccessTimeFilled />
