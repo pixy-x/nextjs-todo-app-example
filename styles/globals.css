@@ -45,3 +45,9 @@
     @apply disabled:cursor-not-allowed disabled:opacity-40;
   }
 }
+
+@layer components {
+  .sub-heading {
+    @apply block w-full text-left uppercase font-bold tracking-widest text-black mt-4 py-4;
+  }
+}
