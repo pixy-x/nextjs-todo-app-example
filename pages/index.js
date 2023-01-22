@@ -1,6 +1,8 @@
 import Container from "@/components/Container";
 import Emoji from "@/components/Emoji";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getDateString } from "@/utils";
+import { nanoid } from "nanoid";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
@@ -10,8 +12,36 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(todo);
+
+    const todoLabel = todo.removeSpaces();
+    const todoDesc = desc.removeSpaces();
+
+    if (todoLabel.length > 0) {
+      const now = getDateString();
+
+      setTodos((todos) => [
+        ...todos,
+        {
+          id: nanoid(),
+          label: todo,
+          desc: {
+            contains: todoDesc.length > 0,
+            content: desc,
+          },
+          createdTime: now,
+        },
+      ]);
+
+      setTodo("");
+      setDesc("");
+    } else {
+      alert("please enter valid todo");
+    }
   };
+
+  useEffect(() => {
+    console.log(todos);
+  }, [todos]);
 
   return (
     <Container className="pt-8">
@@ -46,37 +76,27 @@ export default function Home() {
           Create New To-do
         </button>
       </form>
-      <span className="sub-heading">todo list</span>
-      <div className="flex flex-col gap-4">
-        <div className="relative bg-slate-100 p-4 border rounded-lg">
-          <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl">
-            1{" "}
-          </span>
-          <div className="pl-10">
-            <h4 className="text-slate-800 text-2xl">Wash the Dishes</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-              aperiam commodi cum cupiditate dolorem eum expedita id, illum
-              impedit, inventore maiores necessitatibus nemo nesciunt nobis odio
-              officiis rem similique ullam? lorem
-            </p>
+      {todos.length > 0 && (
+        <>
+          <span className="sub-heading">todo list</span>
+          <div className="flex flex-col gap-4">
+            {todos.map((t, i) => (
+              <div
+                className="relative bg-slate-100 p-4 border rounded-lg"
+                key={t.id}
+              >
+                <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl">
+                  {i + 1}{" "}
+                </span>
+                <div className="pl-10">
+                  <h4 className="text-slate-800 text-2xl">{t.label}</h4>
+                  {t.desc.contains && <p>{t.desc.content}</p>}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-        <div className="relative bg-slate-100 p-4 border rounded-lg">
-          <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl">
-            2{" "}
-          </span>
-          <div className="pl-10">
-            <h4 className="text-slate-800 text-2xl">Wash the Dishes</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
-              aperiam commodi cum cupiditate dolorem eum expedita id, illum
-              impedit, inventore maiores necessitatibus nemo nesciunt nobis odio
-              officiis rem similique ullam? lorem
-            </p>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </Container>
   );
 }
