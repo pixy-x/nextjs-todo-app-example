@@ -3,10 +3,16 @@ import Emoji from "@/components/Emoji";
 import { useEffect, useState } from "react";
 import { getDateString } from "@/utils";
 import { nanoid } from "nanoid";
-import { TbTrash, TbEye } from "react-icons/tb";
+import { TbTrash, TbEye, TbLink } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { Martian_Mono } from "@next/font/google";
+
+/*
+ *
+ * !TODO: { filter, view, share } all tasks
+ *
+ * */
 
 const martianMono = Martian_Mono({
   subsets: ["latin"],
@@ -15,6 +21,7 @@ const martianMono = Martian_Mono({
 export default function Home() {
   const router = useRouter();
 
+  // Task Statement
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
   const [desc, setDesc] = useState("");
@@ -59,6 +66,11 @@ export default function Home() {
   const handleSeeTask = (id) => {
     router.push(`/${id}`);
   };
+
+  const copyTodoLink = async (id) => {
+    await navigator.clipboard.writeText(id);
+    alert("copied!")
+  }
 
   return (
     <Container className="pt-8">
@@ -133,6 +145,9 @@ export default function Home() {
                     onClick={() => handleSeeTask(t.id)}
                   >
                     <TbEye />
+                  </button>
+                  <button className="bg-indigo-700 text-white inline-flex items-center justify-center w-6 h-6 rounded" title="Copy task link" onClick={() => copyTodoLink(t.id)} >
+                    <TbLink />
                   </button>
                 </div>
               </div>
