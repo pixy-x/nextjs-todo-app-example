@@ -8,5 +8,5 @@ export const getDateString = () => {
   const day = dateObj.toLocaleDateString();
   const time = dateObj.toLocaleTimeString();
 
-  return `${day} - ${time}`;
+  return `${day} — ${time}`;
 };

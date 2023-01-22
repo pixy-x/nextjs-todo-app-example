@@ -5,6 +5,12 @@ import { getDateString } from "@/utils";
 import { nanoid } from "nanoid";
 import { TbTrash, TbEye } from "react-icons/tb";
 import { useRouter } from "next/router";
+import { MdAccessTimeFilled } from "react-icons/md";
+import { Martian_Mono } from "@next/font/google";
+
+const martianMono = Martian_Mono({
+  subsets: ["latin"],
+});
 
 export default function Home() {
   const router = useRouter();
@@ -102,6 +108,14 @@ export default function Home() {
                 <div className="px-10">
                   <h4 className="text-slate-800 text-2xl">{t.label}</h4>
                   {t.desc.contains && <p>{t.desc.content}</p>}
+                </div>
+                <div className="flex items-center justify-start py-2 mt-2 pr-10 gap-2 text-gray-600">
+                  <MdAccessTimeFilled />
+                  <span
+                    className={`text-xs leading-5 ${martianMono.className}`}
+                  >
+                    {t.createdTime}
+                  </span>
                 </div>
                 <div className="absolute top-5 right-5 z-10 inline-flex flex-col gap-2">
                   <button
