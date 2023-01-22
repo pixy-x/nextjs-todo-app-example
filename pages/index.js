@@ -3,6 +3,7 @@ import Emoji from "@/components/Emoji";
 import { useEffect, useState } from "react";
 import { getDateString } from "@/utils";
 import { nanoid } from "nanoid";
+import { TbTrash } from "react-icons/tb";
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
@@ -42,6 +43,10 @@ export default function Home() {
   useEffect(() => {
     console.log(todos);
   }, [todos]);
+
+  const deleteTask = (id) => {
+    setTodos(todos.filter((t) => t.id !== id));
+  };
 
   return (
     <Container className="pt-8">
@@ -88,10 +93,17 @@ export default function Home() {
                 <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl">
                   {i + 1}{" "}
                 </span>
-                <div className="pl-10">
+                <div className="px-10">
                   <h4 className="text-slate-800 text-2xl">{t.label}</h4>
                   {t.desc.contains && <p>{t.desc.content}</p>}
                 </div>
+                <button
+                  className="absolute top-5 right-5 bg-red-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                  title="Delete Task"
+                  onClick={() => deleteTask(t.id)}
+                >
+                  <TbTrash />
+                </button>
               </div>
             ))}
           </div>
