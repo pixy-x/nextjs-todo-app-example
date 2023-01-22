@@ -3,11 +3,13 @@ import Emoji from "@/components/Emoji";
 import { useEffect, useState } from "react";
 import { getDateString } from "@/utils";
 import { nanoid } from "nanoid";
-import { TbTrash } from "react-icons/tb";
+import { TbTrash, TbEye } from "react-icons/tb";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const [todos, setTodos] = useState([]);
+  const router = useRouter();
 
+  const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
   const [desc, setDesc] = useState("");
 
@@ -46,6 +48,10 @@ export default function Home() {
 
   const deleteTask = (id) => {
     setTodos(todos.filter((t) => t.id !== id));
+  };
+
+  const handleSeeTask = (id) => {
+    router.push(`/${id}`);
   };
 
   return (
@@ -87,23 +93,32 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             {todos.map((t, i) => (
               <div
-                className="relative bg-slate-100 p-4 border rounded-lg"
+                className="relative bg-slate-100 p-4 border rounded-lg min-h-[96px]"
                 key={t.id}
               >
-                <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl">
+                <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl z-10">
                   {i + 1}{" "}
                 </span>
                 <div className="px-10">
                   <h4 className="text-slate-800 text-2xl">{t.label}</h4>
                   {t.desc.contains && <p>{t.desc.content}</p>}
                 </div>
-                <button
-                  className="absolute top-5 right-5 bg-red-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
-                  title="Delete Task"
-                  onClick={() => deleteTask(t.id)}
-                >
-                  <TbTrash />
-                </button>
+                <div className="absolute top-5 right-5 z-10 inline-flex flex-col gap-2">
+                  <button
+                    className="bg-red-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                    title="Delete Task"
+                    onClick={() => deleteTask(t.id)}
+                  >
+                    <TbTrash />
+                  </button>
+                  <button
+                    className="bg-blue-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                    title="View Task Page"
+                    onClick={() => handleSeeTask(t.id)}
+                  >
+                    <TbEye />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
