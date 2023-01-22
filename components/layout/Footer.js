@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import Emoji from "@/components/Emoji";
+import CustomLink from "@/components/CustomLink";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,9 +11,9 @@ function Footer() {
         <p className="leading-6 tracking-tight text-slate-900 opacity-60">
           &copy; {currentYear} pixyxgit/next - All rights reserved. Please
           contact us if you want to improve or help this app&apos;s code system.{" "}
-          <a href="https://github.com/pixy-x/nextjs-todo-app-example">
+          <CustomLink url="https://github.com/pixy-x/nextjs-todo-app-example">
             Click here
-          </a>{" "}
+          </CustomLink>{" "}
           to see git repo <Emoji symbol={"👍"} />
         </p>
       </Container>
