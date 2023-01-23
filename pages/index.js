@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import Emoji from "@/components/Emoji";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getDateString, successModal } from "@/utils";
 import { nanoid } from "nanoid";
 import { TbTrash, TbEye, TbLink } from "react-icons/tb";
