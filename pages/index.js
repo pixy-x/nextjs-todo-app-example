@@ -7,10 +7,11 @@ import { TbTrash, TbEye, TbLink } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { Martian_Mono } from "@next/font/google";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 /*
  *
- * !TODO: { filter, view, share } all tasks
+ * !TODO: { filter, view, share } all tasks and authentication
  *
  * */
 
@@ -20,6 +21,8 @@ const martianMono = Martian_Mono({
 
 export default function Home() {
   const router = useRouter();
+
+  const [animationParent] = useAutoAnimate();
 
   // Task Statement
   const [todos, setTodos] = useState([]);
@@ -54,10 +57,6 @@ export default function Home() {
       alert("please enter valid todo");
     }
   };
-
-  useEffect(() => {
-    console.log(todos);
-  }, [todos]);
 
   const deleteTask = (id) => {
     setTodos(todos.filter((t) => t.id !== id));
@@ -105,60 +104,57 @@ export default function Home() {
           Create New To-do
         </button>
       </form>
-      {todos.length > 0 && (
-        <>
-          <span className="sub-heading">todo list</span>
-          <div className="flex flex-col gap-4">
-            {todos.map((t, i) => (
-              <div
-                className="relative bg-slate-100 p-4 border rounded-lg min-h-[128px]"
-                key={t.id}
+      <span className="sub-heading">todo list</span>
+      <div className="flex flex-col gap-4" ref={animationParent}>
+        {todos.map((t, i) => (
+          <div
+            className="relative bg-slate-100 p-4 border rounded-lg min-h-[128px]"
+            key={t.id}
+          >
+            <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl z-10">
+              {i + 1}{" "}
+            </span>
+            <div className="px-10">
+              <h4 className="text-slate-800 text-2xl">{t.label.limitText()}</h4>
+              {t.desc.contains && <p>{t.desc.content.limitText(360)}</p>}
+            </div>
+            <div className="flex items-center justify-start py-2 mt-2 pr-10 gap-2 text-gray-600">
+              <MdAccessTimeFilled />
+              <span className={`text-xs leading-5 ${martianMono.className}`}>
+                {t.createdTime}
+              </span>
+            </div>
+            <div className="absolute top-5 right-5 z-10 inline-flex flex-col gap-2">
+              <button
+                className="bg-red-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                title="Delete Task"
+                onClick={() => deleteTask(t.id)}
               >
-                <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl z-10">
-                  {i + 1}{" "}
-                </span>
-                <div className="px-10">
-                  <h4 className="text-slate-800 text-2xl">
-                    {t.label.limitText()}
-                  </h4>
-                  {t.desc.contains && <p>{t.desc.content.limitText(360)}</p>}
-                </div>
-                <div className="flex items-center justify-start py-2 mt-2 pr-10 gap-2 text-gray-600">
-                  <MdAccessTimeFilled />
-                  <span
-                    className={`text-xs leading-5 ${martianMono.className}`}
-                  >
-                    {t.createdTime}
-                  </span>
-                </div>
-                <div className="absolute top-5 right-5 z-10 inline-flex flex-col gap-2">
-                  <button
-                    className="bg-red-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
-                    title="Delete Task"
-                    onClick={() => deleteTask(t.id)}
-                  >
-                    <TbTrash />
-                  </button>
-                  <button
-                    className="bg-blue-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
-                    title="View Task Page"
-                    onClick={() => handleSeeTask(t.id)}
-                  >
-                    <TbEye />
-                  </button>
-                  <button
-                    className="bg-indigo-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
-                    title="Copy task link"
-                    onClick={() => copyTodoLink(t.id)}
-                  >
-                    <TbLink />
-                  </button>
-                </div>
-              </div>
-            ))}
+                <TbTrash />
+              </button>
+              <button
+                className="bg-blue-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                title="View Task Page"
+                onClick={() => handleSeeTask(t.id)}
+              >
+                <TbEye />
+              </button>
+              <button
+                className="bg-indigo-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                title="Copy task link"
+                onClick={() => copyTodoLink(t.id)}
+              >
+                <TbLink />
+              </button>
+            </div>
           </div>
-        </>
-      )}
+        ))}
+        {todos.length === 0 && (
+          <p className="opacity-50 text-slate-900 italic tracking-tight">
+            No task yet..
+          </p>
+        )}
+      </div>
     </Container>
   );
 }
