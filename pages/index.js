@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import Emoji from "@/components/Emoji";
 import { useEffect, useState } from "react";
-import { getDateString } from "@/utils";
+import { getDateString, successModal } from "@/utils";
 import { nanoid } from "nanoid";
 import { TbTrash, TbEye, TbLink } from "react-icons/tb";
 import { useRouter } from "next/router";
@@ -69,8 +69,8 @@ export default function Home() {
 
   const copyTodoLink = async (id) => {
     await navigator.clipboard.writeText(id);
-    alert("copied!")
-  }
+    successModal("Todo Link Copied!");
+  };
 
   return (
     <Container className="pt-8">
@@ -111,7 +111,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             {todos.map((t, i) => (
               <div
-                className="relative bg-slate-100 p-4 border rounded-lg min-h-[96px]"
+                className="relative bg-slate-100 p-4 border rounded-lg min-h-[128px]"
                 key={t.id}
               >
                 <span className="absolute top-5 left-4 w-6 h-6 text-xs bg-slate-800 text-white rounded-full inline-flex items-center justify-center font-bold pt-[.85px] shadow-2xl z-10">
@@ -146,7 +146,11 @@ export default function Home() {
                   >
                     <TbEye />
                   </button>
-                  <button className="bg-indigo-700 text-white inline-flex items-center justify-center w-6 h-6 rounded" title="Copy task link" onClick={() => copyTodoLink(t.id)} >
+                  <button
+                    className="bg-indigo-700 text-white inline-flex items-center justify-center w-6 h-6 rounded"
+                    title="Copy task link"
+                    onClick={() => copyTodoLink(t.id)}
+                  >
                     <TbLink />
                   </button>
                 </div>
